@@ -1,0 +1,16 @@
+.film-card {
+    display: flex;
+}
+
+.film-card__poster {
+    width: 120px;
+    height: 190px;
+    object-fit: contain;
+}
+
+.film-card__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}

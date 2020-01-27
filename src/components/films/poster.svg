@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg enable-background="new 0 0 512 512" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+		<path d="m451 0v31h-30v-31h-330v31h-30v-31h-30v512h30v-31h30v31h330v-31h30v31h30v-512h-30zm-390 121h30v30h-30v-30zm0 60h30v30h-30v-30zm0 60h30v30h-30v-30zm0 60h30v30h-30v-30zm0 60h30v30h-30v-30zm390 90h-390v-30h390v30zm-240-106.98v-176.04l132.04 88.022-132.04 88.022zm240 46.978h-30v-30h30v30zm0-60h-30v-30h30v30zm0-60h-30v-30h30v30zm0-60h-30v-30h30v30zm0-60h-30v-30h30v30zm0-60h-390v-30h390v30z"/>
+		<polygon points="241 224.02 241 287.98 288.96 256"/>
+</svg>
