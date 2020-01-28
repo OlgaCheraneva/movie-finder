@@ -1,10 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useContext} from 'react';
 
 import {FilmItem} from './FilmItem';
 import {Spinner} from '../layout/Spinner';
 
-export const Films = ({loading, films}) => {
+import FilmContext from '../../context/film/filmContext';
+
+export const Films = () => {
+    const filmContext = useContext(FilmContext);
+    const {loading, films} = filmContext;
+
     if (loading) {
         return <Spinner />;
     }
@@ -16,9 +20,4 @@ export const Films = ({loading, films}) => {
             ))}
         </div>
     );
-};
-
-Films.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    films: PropTypes.array.isRequired
 };

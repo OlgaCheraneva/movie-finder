@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
-import PropTypes from 'prop-types';
+import React, {useContext, useState} from 'react';
 
-export const Search = ({setAlert, searchFilms, showClear, clearFilms}) => {
+import FilmContext from '../../context/film/filmContext';
+import AlertContext from '../../context/alert/alertContext';
+
+export const Search = () => {
+    const filmContext = useContext(FilmContext);
+    const alertContext = useContext(AlertContext);
+
     const [text, setText] = useState('');
 
     const onSubmit = (e) => {
@@ -9,9 +14,13 @@ export const Search = ({setAlert, searchFilms, showClear, clearFilms}) => {
 
         if (text === '') {
             const timeout = 3000;
-            setAlert('You should enter something', 'light', timeout);
+            alertContext.setAlert(
+                'You should enter something',
+                'light',
+                timeout
+            );
         } else {
-            searchFilms(text);
+            filmContext.searchFilms(text);
             setText('');
         }
     };
@@ -33,10 +42,10 @@ export const Search = ({setAlert, searchFilms, showClear, clearFilms}) => {
                     value="Search"
                     className="btn btn-block btn-dark"
                 />
-                {showClear && (
+                {filmContext.films.length > 0 && (
                     <button
                         className="btn btn-block btn-light"
-                        onClick={clearFilms}
+                        onClick={filmContext.clearFilms}
                     >
                         Clear
                     </button>
@@ -44,11 +53,4 @@ export const Search = ({setAlert, searchFilms, showClear, clearFilms}) => {
             </form>
         </div>
     );
-};
-
-Search.propTypes = {
-    searchFilms: PropTypes.func.isRequired,
-    clearFilms: PropTypes.func.isRequired,
-    showClear: PropTypes.bool.isRequired,
-    setAlert: PropTypes.func.isRequired
 };

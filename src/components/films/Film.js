@@ -1,11 +1,14 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {Fragment, useContext, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import {Spinner} from '../layout/Spinner';
 import './Film.css';
 
-export const Film = ({film, getFilmById, loading, match}) => {
+import FilmContext from '../../context/film/filmContext';
+
+export const Film = ({match}) => {
+    const {film, loading, getFilmById} = useContext(FilmContext);
+
     // Repeats the behavior of the componentDidMount
     // The second argument defines special trigger conditions
     useEffect(() => {
@@ -64,7 +67,7 @@ export const Film = ({film, getFilmById, loading, match}) => {
                             <h3>Production Companies</h3>
                             <ul>
                                 {production_companies.map((company) => (
-                                    <li>
+                                    <li key={company.id}>
                                         {`${company.name} (${company.origin_country})`}
                                     </li>
                                 ))}
@@ -95,10 +98,4 @@ export const Film = ({film, getFilmById, loading, match}) => {
             </div>
         </Fragment>
     );
-};
-
-Film.propTypes = {
-    film: PropTypes.object.isRequired,
-    loading: PropTypes.bool.isRequired,
-    getFilmById: PropTypes.func.isRequired
 };
