@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import axios from 'axios';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
@@ -12,24 +12,14 @@ import {NotFound} from './components/pages/NotFound';
 
 import './App.css';
 
-class App extends Component {
-    state = {
-        alert: null,
-        film: null,
-        films: [],
-        loading: false
-    };
+const App = () => {
+    const [alert, setAlert] = useState(null);
+    const [film, setFilm] = useState(null);
+    const [films, setFilms] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    async componentDidMount() {
-        // this.setState({loading: true});
-        // const url = `${process.env.REACT_APP_TMDb_API_BASE_URL}configuration?api_key=${process.env.REACT_APP_TMDb_API_KEY}`;
-        // const res = await axios.get(url);
-        // const imagesUrl = [res.data.images.base_url,
-        // this.setState({loading: false});
-    }
-
-    searchFilms = async (text) => {
-        this.setState({loading: true});
+    const searchFilms = async (text) => {
+        setLoading(true);
 
         const url = `${
             process.env.REACT_APP_TMDb_API_BASE_URL
@@ -38,78 +28,74 @@ class App extends Component {
         }&query=${encodeURI(text)}`;
         const res = await axios.get(url);
 
-        this.setState({loading: false, films: res.data.results});
+        setLoading(false);
+        setFilms(res.data.results);
     };
 
-    getFilmById = async (id) => {
-        this.setState({loading: true});
+    const getFilmById = async (id) => {
+        setLoading(true);
 
         const url = `${process.env.REACT_APP_TMDb_API_BASE_URL}movie/${id}?api_key=${process.env.REACT_APP_TMDb_API_KEY}`;
         const res = await axios.get(url);
 
-        this.setState({loading: false, film: res.data});
+        setLoading(false);
+        setFilm(res.data);
     };
 
-    clearFilms = () => this.setState({loading: false, films: []});
-
-    setAlert = (message, type, timeout) => {
-        this.setState({alert: {message, type}});
-
-        setTimeout(() => this.setState({alert: null}), timeout);
+    const clearFilms = () => {
+        setLoading(false);
+        setFilms([]);
     };
 
-    render() {
-        const {alert, film, films, loading} = this.state;
+    const showAlert = (message, type, timeout) => {
+        setAlert({message, type});
 
-        return (
-            <Router>
-                <div className="App">
-                    <Navbar />
-                    <div className="container">
-                        <Switch>
-                            <Route
-                                exact
-                                path="/"
-                                render={() => (
-                                    <Fragment>
-                                        <Alert alert={alert} />
-                                        <Search
-                                            searchFilms={this.searchFilms}
-                                            clearFilms={this.clearFilms}
-                                            setAlert={this.setAlert}
-                                            showClear={
-                                                this.state.films.length > 0
-                                                    ? true
-                                                    : false
-                                            }
-                                        />
-                                        <Films
-                                            films={films}
-                                            loading={loading}
-                                        />
-                                    </Fragment>
-                                )}
-                            />
-                            <Route exact path="/about" component={About} />
-                            <Route
-                                exact
-                                path="/film/:id"
-                                render={(props) => (
-                                    <Film
-                                        {...props}
-                                        film={film}
-                                        loading={loading}
-                                        getFilmById={this.getFilmById}
+        setTimeout(() => setAlert(null), timeout);
+    };
+
+    return (
+        <Router>
+            <div className="App">
+                <Navbar />
+                <div className="container">
+                    <Switch>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <Fragment>
+                                    <Alert alert={alert} />
+                                    <Search
+                                        searchFilms={searchFilms}
+                                        clearFilms={clearFilms}
+                                        setAlert={showAlert}
+                                        showClear={
+                                            films.length > 0 ? true : false
+                                        }
                                     />
-                                )}
-                            />
-                            <Route component={NotFound} />
-                        </Switch>
-                    </div>
+                                    <Films films={films} loading={loading} />
+                                </Fragment>
+                            )}
+                        />
+                        <Route exact path="/about" component={About} />
+                        <Route
+                            exact
+                            path="/film/:id"
+                            render={(props) => (
+                                <Film
+                                    {...props}
+                                    film={film}
+                                    loading={loading}
+                                    getFilmById={getFilmById}
+                                />
+                            )}
+                        />
+                        <Route component={NotFound} />
+                    </Switch>
                 </div>
-            </Router>
-        );
-    }
-}
+            </div>
+        </Router>
+    );
+};
 
 export default App;

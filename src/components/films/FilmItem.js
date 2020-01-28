@@ -8,15 +8,17 @@ import './FilmItem.css';
 export const FilmItem = ({film: {id, poster_path, title}}) => {
     return (
         <div className="card text-center film-card">
-            <img
-                src={
-                    poster_path
-                        ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-                        : poster
-                }
-                alt={title}
-                className="mx film-card__poster"
-            />
+            <Link to={`/film/${id}`}>
+                <img
+                    src={
+                        poster_path
+                            ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+                            : poster
+                    }
+                    alt={title}
+                    className="mx film-card__poster"
+                />
+            </Link>
             <div className="film-card__info">
                 <h3>{title}</h3>
                 <div>
